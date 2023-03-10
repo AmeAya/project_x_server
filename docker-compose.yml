@@ -66,6 +66,9 @@ services:
             POSTGRES_PASSWORD: postgres
         expose:
             - 2345
+        ports:
+            - 2345:2345
+        command: -p 5433
 
 volumes:
     static_volume: {}
