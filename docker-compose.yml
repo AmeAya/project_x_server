@@ -68,7 +68,7 @@ services:
             - 2345
         ports:
             - 2345:2345
-        command: -p 5433
+        command: -p 2345
 
 volumes:
     static_volume: {}
