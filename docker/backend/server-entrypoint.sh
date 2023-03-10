@@ -5,6 +5,8 @@ do
     echo "Waiting for server volume..."
 done
 
+python manage.py makemigrations project
+python manage.py makemigrations
 
 until python manage.py migrate
 do
