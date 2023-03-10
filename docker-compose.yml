@@ -11,6 +11,8 @@ services:
             - static_volume:/app/project_x/static
         expose:
             - 8000
+        ports:
+            - 8000:8000
         environment:
             DEBUG: "True"
             CELERY_BROKER_URL: "redis://redis:6379/0"
