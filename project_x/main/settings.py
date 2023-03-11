@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-l52b#99qfvs^5o7w#5$6)1a)z6t(@1%8sok1!z+r8o&3!)ije)
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['*']
-DEBUG = False
+DEBUG = True
 
 # Application definition
 
@@ -88,7 +88,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://umit-dev.kz']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:9000']
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_USE_SESSIONS = True
