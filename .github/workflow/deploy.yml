@@ -1,0 +1,32 @@
+name: Deploy main
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    env:
+      OWNER: ameaya
+      IMAGE: project_x_server
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+
+      # - run: pip install -r requirements.txt
+
+      # - run: python ../project_x/manage.py
+
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $ --password-stdin
+
+      - run: docker build -f /docker/backend/Dockerfile -t ghcr.io/$OWNER/$IMAGE:latest .
+
+      - run: docker push ghcr.io/$OWNER/$IMAGE:latest
+
+      # - name: Deploy
+      #   run: curl -k -X POST https://pr.umit-dev.kz/api/webhooks/4a197c70-0e5c-4269-bd12-7589eaa2f48e
