@@ -24,7 +24,7 @@ jobs:
 
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $ --password-stdin
 
-      - run: docker build -f /docker/backend/Dockerfile -t ghcr.io/$OWNER/$IMAGE:latest .
+      - run: docker build -f ./docker/backend/Dockerfile -t ghcr.io/$OWNER/$IMAGE:latest .
 
       - run: docker push ghcr.io/$OWNER/$IMAGE:latest
 
