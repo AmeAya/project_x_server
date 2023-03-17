@@ -11,7 +11,7 @@ ADD ./requirements.txt /app/
 RUN pip install -r requirements.txt
 
 ADD ./project_x /app/project_x
-ADD ./docker /app/docker
+ADD ./data /app/data
 
-RUN chmod +x /app/docker/backend/server-entrypoint.sh
-RUN chmod +x /app/docker/backend/worker-entrypoint.sh
+RUN chmod +x /app/data/backend/server-entrypoint.sh
+RUN chmod +x /app/data/backend/worker-entrypoint.sh
