@@ -44,7 +44,7 @@ services:
         build:
             context: .
             dockerfile: data/backend/Dockerfile
-        entrypoint: /app/docker/backend/worker-entrypoint.sh
+        entrypoint: /app/data/backend/worker-entrypoint.sh
         volumes:
             - static_volume:/app/project_x/static
         environment:
