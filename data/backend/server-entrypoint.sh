@@ -17,7 +17,7 @@ done
 
 python manage.py collectstatic --noinput
 
-gunicorn main.wsgi --bind 0.0.0.0:443 --workers 4 --threads 4
+gunicorn main.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
 
 until python manage.py loaddata dump.json
 do
