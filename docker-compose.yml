@@ -31,10 +31,12 @@ services:
             context: .
             dockerfile: data/backend/Dockerfile
         entrypoint: /app/data/backend/server-entrypoint.sh
+        container_name: backend
+        hostname: backend
         volumes:
             - static_volume:/app/project_x/static
-        expose:
-            - 8000
+        ports:
+            - 8000:8000
         environment:
             DEBUG: "True"
             CELERY_BROKER_URL: "redis://redis:6379/0"
