@@ -139,7 +139,6 @@ class UserApiView(APIView):
     serializer_class = CustomUserSerializer
     permission_classes = [CustomPermissions, ]
 
-
     def get(self, request, *args, **kwargs):
         query = CustomUserModel.objects.all()
 
