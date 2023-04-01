@@ -649,9 +649,10 @@ class RecordsApiView(APIView):
             for floor_id in request.data['floor']:
                 new_record.floor.add(FloorModel.objects.get(id=floor_id))
             new_record.save()
+        if 'constructive' in request.data.keys():
+            new_record.constructive = ConstructiveModel.objects.get(id=request.data['constructive'])
+            new_record.save()
         return Response(data={'data': 'success'}, status=status.HTTP_201_CREATED)
-
-
 
 class RecordsDetailView(APIView):
     def get(self, request, record_id, *args, **kwargs):
@@ -665,7 +666,7 @@ class RecordsDetailView(APIView):
         if 'CRUD' in user_groups or 'CRU' in user_groups:
             old_record = get_object_or_404(RecordsModel, id=record_id)
             new_record = RecordsModel(
-                date=datetime.now().strftime('%Y-%m-%d %H:%M'),
+                date=old_record.date,
                 material=MaterialModel.objects.get(id=request.data['material']),
                 mark=MarkModel.objects.get(id=request.data['mark']),
                 object=old_record.object,
@@ -685,6 +686,9 @@ class RecordsDetailView(APIView):
             if 'floor' in request.data.keys():
                 for floor_id in request.data['floor']:
                     new_record.floor.add(FloorModel.objects.get(id=floor_id))
+                new_record.save()
+            if 'constructive' in request.data.keys():
+                new_record.constructive = ConstructiveModel.objects.get(id=request.data['constructive'])
                 new_record.save()
             old_record.is_hidden = True
             old_record.save()
