@@ -2,9 +2,10 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import Group
 
 class CustomUserManager(BaseUserManager):
-    def _create_user(self, phone, first_name, last_name, iin, position, is_admin, password):
+    def _create_user(self, phone, mail, first_name, last_name, iin, position, is_admin, password):
         user = self.model(
             phone=phone,
+            mail=mail,
             first_name=first_name,
             last_name=last_name,
             iin=iin,

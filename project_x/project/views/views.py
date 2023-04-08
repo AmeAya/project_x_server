@@ -15,6 +15,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import login, logout
 from drf_yasg.utils import swagger_auto_schema
 from project.views.tasks import create_records
+from ..smtplib.mail import send_mail
 import random
 import mimetypes
 
@@ -64,12 +65,14 @@ class PhoneConfirmationApiView(APIView):
                     try:
                         if CustomUserModel.objects.get(phone=phone):
                             new_code = generate_code(CustomUserModel.objects.get(phone=phone))
+                            send_mail(request.user.mail, new_code)
                             request.session['phone'] = phone
                             request.session['check'] = 0
                             #Отправка смс
                             return Response(data={'code': new_code, 'success': 'old user'}, status=status.HTTP_200_OK)
                     except:
                         new_code = generate_code(0)
+                        send_mail(request.user.mail, new_code)
                         request.session['phone'] = phone
                         request.session['check'] = 1
                         return Response(data={'code': new_code, 'success': 'new user'}, status=status.HTTP_200_OK)
@@ -116,6 +119,7 @@ class RegistrationApiView(APIView):
     def post(self, request, *args, **kwargs):
         if request.data:
             phone = request.session['phone']
+            mail = request.data.get('mail')
             first_name = request.data.get('first_name')
             last_name = request.data.get('last_name')
             iin = request.data.get('iin')
@@ -123,6 +127,7 @@ class RegistrationApiView(APIView):
             user = CustomUserModel(
                 first_name=first_name,
                 phone=phone,
+                mail=mail,
                 last_name=last_name,
                 position=position,
                 iin=iin)

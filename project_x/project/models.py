@@ -26,6 +26,7 @@ class PositionModel(AbstractTimeTracker):
 
 class CustomUserModel(AbstractBaseUser, PermissionsMixin, AbstractTimeTracker):
     phone = models.CharField(max_length=15, unique=True, verbose_name='Номер телефона')
+    mail = models.CharField(max_length=50, unique=True, verbose_name='Почта', default=' ')
     first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Имя')
     last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Фамилия')
     iin = models.CharField(max_length=12, unique=True, blank=False, null=False, verbose_name='ИИН')
