@@ -13,7 +13,8 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUserModel
     list_display = ('id', 'last_name', 'first_name', 'phone', 'position', 'head_of_object', 'group')
-    list_filter = ('position', )
+    list_filter = ('position', 'id', )
+
     fieldsets = (
         (
             'Main', {
@@ -45,7 +46,7 @@ class CustomUserAdmin(UserAdmin):
         )
     )
     search_fields = ('phone',)
-    ordering = ('phone',)
+    ordering = ('phone', 'id')
 
     def head_of_object(self, obj):
         try:
