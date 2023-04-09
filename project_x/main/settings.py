@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-l52b#99qfvs^5o7w#5$6)1a)z6t(@1%8sok1!z+r8o&3!)ije)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['api.umit-dev.kz']
+ALLOWED_HOSTS = ['*']
 DEBUG = True
 
 # Application definition
@@ -85,14 +85,27 @@ CORS_ALLOW_HEADERS = [
     'csrftoken'
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 # SESSION_COOKIE_SAMESITE = 'None'
 # SESSION_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://api.umit-dev.kz', 'https://umit-dev.kz']
+# # CSRF_TRUSTED_ORIGINS = ['https://api.umit-dev.kz', 'https://umit-dev.kz']
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = 'None'
-CSRF_USE_SESSIONS = True
+# CSRF_USE_SESSIONS = True
+# ROOT_URLCONF = 'main.urls'
+
+
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['http://localhost:9000']
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
+#SESSION_SAVE_EVERY_REQUEST = True
 ROOT_URLCONF = 'main.urls'
+
 
 TEMPLATES = [
     {
@@ -114,22 +127,22 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "project_x_db",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 2345,  # default postgres port
-    }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "project_x_db",
+#         "USER": "postgres",
+#         "PASSWORD": "postgres",
+#         "HOST": "db",  # set in docker-compose.yml
+#         "PORT": 2345,  # default postgres port
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

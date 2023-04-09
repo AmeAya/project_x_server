@@ -24,14 +24,15 @@ class CustomUserManager(BaseUserManager):
             user.save()
         return user
 
-    def create_user(self, phone, password, **extra_fields):
+    def create_user(self, mail, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(phone, password, None, None, True)
+        return self._create_user(mail, password, None, None, True)
 
-    def create_superuser(self, phone, first_name, last_name, iin, password, **extra_fields):
+    def create_superuser(self, mail, phone, first_name, last_name, iin, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(phone, first_name, last_name, iin, None, True, password)
+        return self._create_user(mail, phone, first_name, last_name, iin, None, True, password)
+

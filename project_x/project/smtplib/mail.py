@@ -3,8 +3,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 
-email_sender = 'gulmirabakhytbekovna@gmail.com'
-password = 'fqjmyryuohuhrjko'
+email_sender = 'arystanbek.abdrakhmanov@gmail.com'
+password = 'kfkoogzwebjdvisk'
 
 
 smtp_server = smtplib.SMTP('smtp.gmail.com', 587)

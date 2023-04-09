@@ -25,7 +25,7 @@ class PositionModel(AbstractTimeTracker):
 
 
 class CustomUserModel(AbstractBaseUser, PermissionsMixin, AbstractTimeTracker):
-    phone = models.CharField(max_length=15, unique=True, verbose_name='Номер телефона')
+    phone = models.CharField(max_length=15, unique=True, verbose_name='Номер телефона', default=' ')
     mail = models.CharField(max_length=50, unique=True, verbose_name='Почта', default=' ')
     first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Имя')
     last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Фамилия')
@@ -33,15 +33,15 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin, AbstractTimeTracker):
     position = models.ForeignKey(PositionModel, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Должность')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    USERNAME_FIELD = 'phone'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'iin']
+    USERNAME_FIELD = 'mail'
+    REQUIRED_FIELDS = ['phone', 'first_name', 'last_name', 'iin']
 
     objects = CustomUserManager()
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-        ordering = ('phone', )
+        ordering = ('mail', )
 
     def __str__(self):
         return str(self.position.name) + ': ' + str(self.first_name) + ' ' + str(self.last_name)

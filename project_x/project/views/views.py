@@ -20,8 +20,8 @@ import random
 import mimetypes
 
 
-def f_login(request, phone):
-    user = CustomUserModel.objects.get(phone=phone)
+def f_login(request, mail):
+    user = CustomUserModel.objects.get(mail=mail)
     if user is not None:
         login(request, user)
 
@@ -55,35 +55,35 @@ def generate_code(user):
 class PhoneConfirmationApiView(APIView):
     def post(self, request, *args, **kwargs):
         try:
-            phone = request.data.get('phone')
+            mail = request.data.get('mail')
         except KeyError:
-            phone = None
+            mail = None
         try:
-            if phone is not None:
+            if mail is not None:
 
-                if len(phone) == 11 and str(phone).isnumeric():
+                if mail:
                     try:
-                        if CustomUserModel.objects.get(phone=phone):
-                            new_code = generate_code(CustomUserModel.objects.get(phone=phone))
-                            send_mail(request.user.mail, new_code)
-                            request.session['phone'] = phone
+                        if CustomUserModel.objects.get(mail=mail):
+                            new_code = generate_code(CustomUserModel.objects.get(mail=mail))
+                            send_mail(mail, new_code)
+                            request.session['mail'] = mail
                             request.session['check'] = 0
                             #Отправка смс
                             return Response(data={'code': new_code, 'success': 'old user'}, status=status.HTTP_200_OK)
                     except:
                         new_code = generate_code(0)
-                        send_mail(request.user.mail, new_code)
-                        request.session['phone'] = phone
+                        send_mail(mail, new_code)
+                        request.session['mail'] = mail
                         request.session['check'] = 1
                         return Response(data={'code': new_code, 'success': 'new user'}, status=status.HTTP_200_OK)
                 else:
-                    return Response(data={'error': 'Phone number is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data={'error': 'Mail is not valid'}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 if request.session['check'] == 0:
                     if str(request.data.get('code')) == CodeModel.objects.get(code=request.data.get('code')).code:
-                        f_login(request, request.session['phone'])
+                        f_login(request, request.session['mail'])
                         del request.session['check']
-                        del request.session['phone']
+                        del request.session['mail']
                         return Response(data={'success': 'Auth'}, status=status.HTTP_200_OK)
                     else:
                         return Response(data={'error': 'xz'}, status=status.HTTP_400_BAD_REQUEST)
@@ -92,7 +92,7 @@ class PhoneConfirmationApiView(APIView):
                         del request.session['check']
                         # отправить на регистрацию
                         return Response(
-                            data={'success': 'phone is valid'},
+                            data={'success': 'mail is valid'},
                             status=status.HTTP_200_OK)
                     else:
                         return Response(
@@ -118,8 +118,8 @@ class LogOutView(APIView):
 class RegistrationApiView(APIView):
     def post(self, request, *args, **kwargs):
         if request.data:
-            phone = request.session['phone']
-            mail = request.data.get('mail')
+            phone = request.data.get('phone')
+            mail = request.session['mail']
             first_name = request.data.get('first_name')
             last_name = request.data.get('last_name')
             iin = request.data.get('iin')
@@ -134,7 +134,7 @@ class RegistrationApiView(APIView):
             my_group = Group.objects.get(name='not confirmed')
             user.save()
             my_group.user_set.add(user)
-            del request.session['phone']
+            del request.session['mail']
             login(request, user)
             return Response(data={'success': 'user is create'}, status=status.HTTP_201_CREATED)
 
@@ -166,6 +166,7 @@ class UserApiView(APIView):
     def post(self, request, *args, **kwargs):
         new_user = CustomUserModel(
             phone=int(request.data['phone']),
+            mail=str(request.data['mail']),
             first_name=str(request.data['first_name']),
             last_name=str(request.data['last_name']),
             iin=int(request.data['iin']),
