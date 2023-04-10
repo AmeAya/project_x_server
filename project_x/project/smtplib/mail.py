@@ -11,7 +11,6 @@ smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
 
 def send_mail(mail, code):
     try:
-        smtp_server.starttls()
         smtp_server.login(email_sender, password)
         msg = MIMEMultipart()
         msg.attach(MIMEText(f'Ваш код: {code}'))
