@@ -97,7 +97,7 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 CSRF_TRUSTED_ORIGINS = ['https://*.umit-dev.kz', 'http://*.umit-dev.kz', 'http://localhost', 'https://localhost']
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = "None"
