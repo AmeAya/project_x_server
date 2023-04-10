@@ -44,7 +44,7 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin, AbstractTimeTracker):
         ordering = ('mail', )
 
     def __str__(self):
-        return str(self.position.name) + ': ' + str(self.first_name) + ' ' + str(self.last_name)
+        return str(self.first_name) + ' ' + str(self.last_name)
 
 
 class CodeModel(AbstractTimeTracker):
