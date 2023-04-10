@@ -34,5 +34,9 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(mail, phone, first_name, last_name, iin, None, True, password)
-
+        new = self._create_user(mail, phone, first_name, last_name, iin, None, True, password)
+        new.is_active = True
+        new.is_staff = True
+        new.is_superuser = True
+        new.save(using=self._db)
+        return new
