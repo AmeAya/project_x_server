@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (
             'Main', {
-                'fields': ('phone', 'first_name', 'last_name', 'iin', 'position')
+                'fields': ('phone', 'mail', 'first_name', 'last_name', 'iin', 'position')
             }
         ),
         (
@@ -36,7 +36,7 @@ class CustomUserAdmin(UserAdmin):
         (
             'Main', {
                 'classes': ('wide',),
-                'fields': ('phone', 'first_name', 'last_name', 'iin', 'position')
+                'fields': ('phone', 'mail', 'first_name', 'last_name', 'iin', 'position')
             }
         ),
         (
