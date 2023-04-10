@@ -53,53 +53,40 @@ def generate_code(user):
 
 
 class PhoneConfirmationApiView(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            mail = request.data.get('mail')
-        except KeyError:
-            mail = None
-        try:
-            if mail is not None:
-
-                if mail:
-                    try:
-                        if CustomUserModel.objects.get(mail=mail):
-                            new_code = generate_code(CustomUserModel.objects.get(mail=mail))
-                            send_mail(mail, new_code)
-                            request.session['mail'] = mail
-                            request.session['check'] = 0
-                            #Отправка смс
-                            return Response(data={'code': new_code, 'success': 'old user'}, status=status.HTTP_200_OK)
-                    except:
-                        new_code = generate_code(0)
-                        send_mail(mail, new_code)
-                        request.session['mail'] = mail
-                        request.session['check'] = 1
-                        return Response(data={'code': new_code, 'success': 'new user'}, status=status.HTTP_200_OK)
-                else:
-                    return Response(data={'error': 'Mail is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        if 'mail' in request.data.keys():
+            mail = request.data['mail']
+            request.session['mail'] = mail
+            if CustomUserModel.objects.filter(mail=mail).exists():
+                new_code = generate_code(CustomUserModel.objects.get(mail=mail))
+                send_mail(mail, new_code)
+                request.session['new'] = False
+                return Response(data={'code': new_code, 'success': 'old user'}, status=status.HTTP_200_OK)
             else:
-                if request.session['check'] == 0:
-                    if str(request.data.get('code')) == CodeModel.objects.get(code=request.data.get('code')).code:
-                        f_login(request, request.session['mail'])
-                        del request.session['check']
-                        del request.session['mail']
-                        return Response(data={'success': 'Auth'}, status=status.HTTP_200_OK)
-                    else:
-                        return Response(data={'error': 'xz'}, status=status.HTTP_400_BAD_REQUEST)
-                elif request.session['check'] == 1:
-                    if str(request.data.get('code')) == CodeModel.objects.get(code=request.data.get('code')).code:
-                        del request.session['check']
-                        # отправить на регистрацию
-                        return Response(
-                            data={'success': 'mail is valid'},
-                            status=status.HTTP_200_OK)
-                    else:
-                        return Response(
-                            data={'error': 'code is not valid'},
-                            status=status.HTTP_400_BAD_REQUEST)
-                else: return Response(data={'error': 'sessions error'}, status=status.HTTP_400_BAD_REQUEST)
-        except: return Response(data={'error': 'sessions error'})
+                new_code = generate_code(0)
+                send_mail(mail, new_code)
+                request.session['new'] = True
+                return Response(data={'code': new_code, 'success': 'new user'}, status=status.HTTP_200_OK)
+        elif 'code' in request.data.keys():
+            code = str(request.data.get('code'))
+            if request.session['new'] is False:
+                if CodeModel.objects.filter(code=code).exists():
+                    f_login(request, request.session['mail'])
+                    del request.session['new']
+                    del request.session['mail']
+                    CodeModel.objects.get(code=code).delete()
+                    return Response(data={'success': 'Auth'}, status=status.HTTP_200_OK)
+                else:
+                    return Response(data={'error': 'Code is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+            elif request.session['new']:
+                if CodeModel.objects.filter(code=code).exists():
+                    del request.session['new']
+                    CodeModel.objects.get(code=code).delete()
+                    return Response(data={'success': 'code is valid'}, status=status.HTTP_200_OK)
+                else:
+                    return Response(data={'error': 'code is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(data={'error': 'sessions error'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogOutView(APIView):
