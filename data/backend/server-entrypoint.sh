@@ -14,6 +14,11 @@ do
     sleep 2
 done
 
+until python manage.py loaddata data.json
+do
+    echo "Waiting for load backups..."
+    sleep 2
+done
 
 python manage.py collectstatic --noinput
 

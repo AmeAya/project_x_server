@@ -680,9 +680,12 @@ class RecordsDetailView(APIView):
                 for floor_id in request.data['floor']:
                     new_record.floor.add(FloorModel.objects.get(id=floor_id))
                 new_record.save()
-            if 'constructive' in request.data.keys():
-                new_record.constructive = ConstructiveModel.objects.get(id=request.data['constructive'])
-                new_record.save()
+            if 'constructive' in request.data.keys() and request.data['constructive'] is not None:
+                try:
+                    new_record.constructive = ConstructiveModel.objects.get(id=request.data['constructive'])
+                    new_record.save()
+                except:
+                    pass
             old_record.is_hidden = True
             old_record.save()
             update = RecordsLogModel(
