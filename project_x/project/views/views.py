@@ -642,7 +642,7 @@ class RecordsApiView(APIView):
             for floor_id in request.data['floor']:
                 new_record.floor.add(FloorModel.objects.get(id=floor_id))
             new_record.save()
-        if 'constructive' in request.data.keys():
+        if 'constructive' in request.data.keys() and request.data['constructive'] is not None:
             new_record.constructive = ConstructiveModel.objects.get(id=request.data['constructive'])
             new_record.save()
         return Response(data={'data': 'success'}, status=status.HTTP_201_CREATED)
